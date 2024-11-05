@@ -13,7 +13,8 @@ namespace ModelosMigracionesEnAula.Controllers
         private readonly AppDbContext _context;
 
 
-        public HomeController(ILogger<HomeController> logger, AppDbContext context)
+        public HomeController(ILogger<HomeController> logger,
+            AppDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -21,12 +22,22 @@ namespace ModelosMigracionesEnAula.Controllers
 
         public IActionResult Index()
         {
-            List<Producto> productosAgregar = new List<Producto>();
-            productosAgregar.Add(new Producto { Nombre = "Producto 2", Precio = 99 });
-            productosAgregar.Add(new Producto { Nombre = "Producto 3", Precio = 99 });
+            List<Producto> productos = _context.Productos.ToList();
+            ViewData["Productos"] = productos;
+            ViewBag.Productos = productos;
+            return View();
+        }
 
-            _context.Productos.AddRange(productosAgregar);
-            _context.SaveChanges();
+        public IActionResult Detalle(int id)
+        {
+            Producto? producto = _context.Productos.Find(id);
+            // Manejar la excepcion de que no hay producto
+            if (producto == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.Producto = producto;
             return View();
         }
 

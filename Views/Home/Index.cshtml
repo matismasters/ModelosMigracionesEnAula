@@ -3,6 +3,37 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Productos</h1>
+    <p>Cantidad de productos: @ViewBag.Productos.Count</p>
+    <p>Productos:</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var producto in ViewBag.Productos)
+            {
+                <tr>
+                    <td>@producto.Nombre</td>
+                    <td>
+                        @if (producto.Cantidad > 0)
+                        {
+                            <span>@producto.Cantidad</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Sin stock</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Detalle", "Home", new { id = producto.Id })">Ver detalle</a
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
